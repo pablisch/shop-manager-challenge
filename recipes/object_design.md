@@ -114,10 +114,10 @@ expect(orders.first.item_id).to eq 2
 repo = OrderRepository.new
 id_to_find = 1
 order = repo.find(id_to_find) # an array of orders objects
-expect(order.first.id).to eq 1
-expect(order.first.customer).to eq 'Doctor Who'
-expect(orders.first.date).to eq '2056-04-13'
-expect(orders.first.item_id).to eq 2
+expect(order.id).to eq 1
+expect(order.customer).to eq 'Doctor Who'
+expect(order.date).to eq '2056-04-13'
+expect(order.item_id).to eq 2
 
 # 3 create new order
 repo = OrderRepository.new
