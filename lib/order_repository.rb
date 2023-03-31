@@ -5,9 +5,7 @@ class OrderRepository
     sql = 'SELECT * FROM orders;'
     results = DatabaseConnection.exec_params(sql, [])
     orders = []
-    results.each do |record|
-      orders << write_order(record)
-    end
+    results.each{ |record| orders << write_order(record) }
     return orders
   end
 

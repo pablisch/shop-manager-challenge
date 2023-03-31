@@ -152,7 +152,7 @@ updated_order = repo.find(id_to_update)
 expect(updated_order.customer).to eq "Davros"
 expect(updated_order.date).to eq "1066-02-12"
 expect(updated_order.item_id).to eq 8
-expect(updated_order.id).to eq 6
+expect(updated_order.id).to eq 1
 ```
 
 ## 7. Reload the SQL seeds before each test run

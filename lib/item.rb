@@ -1,7 +1,7 @@
 class Item
-  attr_accessor :id, :name, :price, :quantity, :order
+  attr_accessor :id, :name, :price, :quantity, :orders
 
   def initialize
-    @order = []
+    @orders = []
   end
 end

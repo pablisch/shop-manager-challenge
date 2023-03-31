@@ -99,7 +99,7 @@ end
 # update an xxx object identified by id. Returns nothing
   def find_with_orders(id)
     # executes the SQL query:
-    # SELECT items.id AS "item_id", items.name, items.price, items.quantity, orders.title, orders.release_year, orders.id AS "orders_id"
+    # SELECT items.id AS "item_id", items.name, items.price, items.quantity, orders.customer, orders.date, orders.id AS "order_id"
     # FROM items
     # JOIN orders
     # ON orders.item_id = items.id
@@ -137,7 +137,7 @@ item.price = 69.99
 item.quantity = 3
 repo.create(item)
 items = repo.all
-expect(items[-1].name).to eq 'Title'
+expect(items[-1].name).to eq 'Sonic screwdriver'
 expect(items[-1].price).to eq 69.99
 expect(items[-1].quantity).to eq 3
 expect(items[-1].id).to eq 10
@@ -162,7 +162,7 @@ updated_item = repo.find(id_to_update)
 expect(updated_item.name).to eq "Dung beetle"
 expect(updated_item.price).to eq 0.1
 expect(updated_item.quantity).to eq 3000
-expect(updated_item.id).to eq 9
+expect(updated_item.id).to eq 3
 
 # 6 SELECT a single item and all associated orders
 repo = ItemRepository.new
