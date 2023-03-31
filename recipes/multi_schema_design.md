@@ -1,5 +1,7 @@
 Multi Table Design Recipe Template
 
+DBs: shop_manager AND shop_manager_test
+
 ## 1. Extract nouns from the user stories or specification
 
 As a shop manager
@@ -63,7 +65,7 @@ CREATE TABLE items (   -- the table that represents one, NOT many
   id SERIAL PRIMARY KEY,
   name text,
   price numeric,
-  quantity date
+  quantity int
 );
 
 -- Then the table with the foreign key first.

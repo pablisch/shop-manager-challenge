@@ -1,4 +1,4 @@
-{{🦠DATABASE : 🦠TABLE }} Model and Repository Classes Design Recipe.
+{{🦠 shop_manager : 🦠 items, orders }} Model and Repository Classes Design Recipe.
 
 ## NOTES:
 
@@ -178,12 +178,17 @@ end
 ## 8. CHECK:
 
 > That all the relevant requires are in place:
-> {table}_repository.rb > require_relative '{table}'
-> {table}_repository_spec.rb > require '{table}_repository'
-> app.rb > require_relative 'lib/database_connection'
-         & require_relative 'lib/{table}_repository'
-> spec_helper.rb > database_connection.rb
-> database_connection.rb > require 'pg'
+
+> {TABLE}_REPOSITORY.rb > require_relative '{table}'
+
+> {TABLE}_REPOSITORY_SPEC.rb > require '{table}_repository'
+
+> APP.RB > require_relative 'lib/database_connection'
+         > require_relative 'lib/{table}_repository'
+
+> SPEC_HELPER.RB > database_connection.rb
+
+> DATABASE_CONNECTION.RB > require 'pg'
 
 ## 9. Test-drive and implement the Repository class behaviour
 After each test you write, follow the test-driving process of red, green, refactor to implement the behaviour.

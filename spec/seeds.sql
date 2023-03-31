@@ -21,5 +21,5 @@ INSERT INTO orders (customer, date, item_id) VALUES
 ('Chewbacca', '1977-06-23', 8),
 ('Perseus', '10-01-15', 8),
 ('Harry Potter', '2013-08-01', 4),
-('Sun Ra', '1979-12-31', 3),
+('Sun Ra', '1979-12-31', 3)
 ;
