@@ -38,10 +38,10 @@ I want to be able to create a new order.
 ## 2. Infer the Table Name and Columns
 Put the different nouns in this table. Replace the example with your own nouns.
 
-| Record	   | Properties           |
-| ---------- | -------------------- |
-| items	     | price, quantity      |
-| orders	   | customer, date       |
+| Record	   | Properties             |
+| ---------- | ---------------------- |
+| items	     | name, price, quantity  |
+| orders	   | customer, date         |
 
 ## 3. Decide the column types.
 Here's a full documentation of [PostgreSQL data types](https://www.postgresql.org/docs/current/datatype.html).
@@ -55,14 +55,15 @@ Can one [TABLE ONE] have many [TABLE TWO]? (Yes/No) Yes
 Can one [TABLE TWO] have many [TABLE ONE]? (Yes/No)
 
 ## 5. Write the SQL.
-```sql
+
 -- EXAMPLE
 -- file: albums_table.sql
-
-CREATE TABLE item (   -- the table that represents one, NOT many
+```sql
+CREATE TABLE items (   -- the table that represents one, NOT many
   id SERIAL PRIMARY KEY,
-  price money,
-  quantity date,
+  name text,
+  price numeric,
+  quantity date
 );
 
 -- Then the table with the foreign key first.

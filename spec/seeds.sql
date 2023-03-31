@@ -1,21 +1,25 @@
-TRUNCATE TABLE albums, artists RESTART IDENTITY; -- replace with your own table name.
+TRUNCATE TABLE items, orders RESTART IDENTITY; -- replace with your own table name.
 
 -- Below this line there should only be `INSERT` statements.
 -- Replace these statements with your own seed data.
 
-INSERT INTO albums (title, release_year, artist_id) VALUES 
-('Future Days', '1973', 1), 
-('Monster Movie', '1969', 1),
-('Tell Her', '1969', 3),
-('Can', '1975', 1),
-('Ege Bamyasi', '1972', 1),
-('Landed', '1975', 1),
-('Surfer Rosa', '1988', 2),
-('Doolittle', '1989', 2),
-('Bossanova', '1990', 2)
+INSERT INTO items (name, price, quantity) VALUES 
+('Vorpal blade', 34.99 , 20), 
+('Tardis', 139.5, 3),
+('Scarab beetle', 10.99, 300),
+('Light saber', 101, 13),
+('Elder wand', 56.78, 1),
+('Winged helmet', 14.69, 45),
+('Flux capacitor', 20, 41),
+('AT-AT', 2350, 2),
+('Horcrux', 0.5, 7)
 ;
 
-INSERT INTO artists (name, genre) VALUES ('CAN', 'Krautrock'),
-('Pixies', 'Indie'),
-('Fred Williams', 'Afro-Rock')
+INSERT INTO orders (customer, date, item_id) VALUES 
+('Doctor Who', '2056-04-13', 2),
+('Voldermort', '2005-04-01', 9),
+('Chewbacca', '1977-06-23', 8),
+('Perseus', '10-01-15', 8),
+('Harry Potter', '2013-08-01', 4),
+('Sun Ra', '1979-12-31', 3),
 ;
