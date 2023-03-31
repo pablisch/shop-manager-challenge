@@ -1,4 +1,4 @@
-{{🦠 shop_manager : 🦠 items, orders }} Model and Repository Classes Design Recipe.
+{{🦠 shop_manager : 🦠 orders }} Model and Repository Classes Design Recipe for the MANY table of a ONE-to-MANY relationship.
 
 ## NOTES:
 
@@ -7,10 +7,12 @@
 
 ## 1. Design and create the Table
 
-Table: albums
+Table:
 
-Columns:
-id | title | genre
+| Record	   | Properties               |
+| ---------- | ------------------------ |
+| items	     | name, price, quantity    |
+| orders	   | customer, date, item_id  |
 
 🦠 Create the table AND table_test and insert data from seed: 
 ```bash
@@ -26,13 +28,13 @@ psql -h 127.0.0.1 your_database_name_test < {table_name}.sql
 ## 2. Create Test SQL seeds
 
 -- (file: spec/seeds_{table_name}.sql)
->> spec/seeds_albums.sql
+>> spec/seeds_xxx.sql
 
 ```sql
-TRUNCATE TABLE albums RESTART IDENTITY; -- 🦠 TABLE NAME! 🦠 replace with your own table name.
+TRUNCATE TABLE xxx RESTART IDENTITY; -- 🦠 TABLE NAME! 🦠 replace with your own table name.
 
-INSERT INTO albums (title, release_year, artist_id) VALUES ('Future Days', '1974', 1);
-INSERT INTO albums (title, release_year, artist_id) VALUES ('Tell Her', '1969', 2);
+INSERT INTO xxx (attr1, attr2, xxx_id) VALUES ('...', '...', 1);
+INSERT INTO xxx (attr1, attr2, xxx_id) VALUES ('...', '...', 1);
 ```
 
 To insert this data into your test database => psql -h 127.0.0.1 <your_database_name>_test < seeds_{table_name}.sql
@@ -41,12 +43,10 @@ To insert this data into your test database => psql -h 127.0.0.1 <your_database_
 Usually, the Model class name will be the capitalised table name (single instead of plural). The same name is then suffixed by Repository for the Repository class name.
 
 ```ruby
-# model class FILE lib/album.rb
-class Album
+class Order
 end
 
-# repository class FILE lib/album_repository.rb
-class AlbumRepository
+class OrderRepository
 end
 ```
 
@@ -54,26 +54,26 @@ end
 Define the attributes of your Model class. You can usually map the table columns to the attributes of the class, including primary and foreign keys.
 
 ```ruby
-class Album
-  attr_accessor :id, :title, :release_year, :artist_id
+class Order
+  attr_accessor :id, :customer, :date, :item_id
 end
 ```
 
 ## 5. Define the Repository Class interface
 ```ruby
 # 1 repository class FILE lib/xxx_repository.rb
-class AlbumRepository
+class OrderRepository
 # return all xxx objects from table
   def all
     # executes the SQL query:
-    # SELECT id, title, release_year, artist_id FROM artists;
+    # SELECT * FROM artists;
     # returns an array of album objects as hashes
   end
 
 # Find and return a single xxx object
   def find(id)
     # executes the SQL query:
-    # SELECT id, title, release_year, artist_id FROM artists WHERE id = $1;
+    # SELECT attr1, attr2, etc., <many-class>_id FROM xxx WHERE id = $1;
     # returns an array of album objects as hashes
   end
 end
@@ -81,19 +81,19 @@ end
 # Create a new xxx object. Returns nothing
   def create(album)
     # executes the SQL query:
-    # INSERT INTO albums (title, release_year, artist_id) VALUES ($1, $2, $3);
+    # INSERT INTO xxx (attr1, attr2, etc, <many-class>_id) VALUES ($1, $2, $3);
   end
 
 # delete an xxx object identified by id. Returns nothing
   def delete(id)
     # executes the SQL query:
-    # DELETE FROM albums WHERE id = $1;
+    # DELETE FROM xxx WHERE id = $1;
   end
 
 # update an xxx object identified by id. Returns nothing
   def update(album)
     # executes the SQL query:
-    # UPDATE albums SET title = $1, release_year = $2 WHERE id = $3;
+    # UPDATE xxx SET attr1 = $1, attr2 = $2 WHERE id = $3;
   end
 end
 ```
@@ -102,53 +102,57 @@ end
 Write Ruby code that defines the expected behaviour of the Repository class, following your design from the table written in step 5.
 ```ruby
 # 1 return all
-repo = AlbumRepository.new
-albums = repo.all # an array of Albums objects
-albums.length # => 2
-albums.first.id # => '1'
-albums.first.title # => 'Future Days'
+repo = OrderRepository.new
+orders = repo.all # an array of orders objects
+expect(orders.length).to eq 6
+expect(orders.first.id).to eq 1
+expect(orders.first.customer).to eq 'Doctor Who'
+expect(orders.first.date).to eq '2056-04-13'
+expect(orders.first.item_id).to eq 2
 
-# 2 find a single album by id
-repo = AlbumRepository.new
+# 2 find a single order by id
+repo = OrderRepository.new
 id_to_find = 1
-album = repo.find(id_to_find) # an array of Albums objects
-album.first.id # => '1'
-album.first.title # => 'Future Days'
+order = repo.find(id_to_find) # an array of orders objects
+expect(order.first.id).to eq 1
+expect(order.first.customer).to eq 'Doctor Who'
+expect(orders.first.date).to eq '2056-04-13'
+expect(orders.first.item_id).to eq 2
 
-# 3 create new album
-repo = AlbumRepository.new
-album = Album.new
-album.title = 'Title'
-album.release_year = '2023'
-album.artist_id = '1'
-repo.create(album)
-albums = repo.all
-# expect(albums).to include(have_attributes title: album.title,
-# release_year: album.release_year,
-# artist_id: album.artist_id
-# )
-expect(albums[-1].title).to eq 'Title'
-expect(albums[-1].release_year).to eq '2023'
-expect(albums[-1].artist_id).to eq '1'
+# 3 create new order
+repo = OrderRepository.new
+order = Order.new
+order.customer = 'Luke Skywalker'
+order.release_year = '1976'
+order.item_id = '4'
+repo.create(order)
+orders = repo.all
+expect(orders[-1].id).to eq 7
+expect(orders[-1].customer).to eq 'Luke Skywalker'
+expect(orders[-1].date).to eq '2056-04-13'
+expect(orders[-1].item_id).to eq 2
 
-# 4 delete album
-repo = AlbumRepository.new
+# 4 delete order
+repo = OrderRepository.new
 id_to_delete = 1
 repo.delete(id_to_delete)
-albums = repo.all # returns an array of all albums
-albums.length # => 1
-albums[0].id # => '2'
+orders = repo.all # returns an array of all orders
+expect(orders.length).to eq 5
+expect(orders[0].id).to eq 2
 
-# 5 update album
-repo = AlbumRepository.new
+# 5 update order
+repo = OrderRepository.new
 id_to_update = 1
-album = repo.find(id_to_update)
-album.title = "Past Days"
-album.title = "Folk"
-repo.update(album)
-updated_album = repo.find(id_to_update)
-updated_album.title # => "Past Days"
-updated_album.genre # => "Folk"
+order = repo.find(id_to_update)
+order.customer = "Davros"
+order.date = "1066-02-12"
+order.item_id = 8
+repo.update(order)
+updated_order = repo.find(id_to_update)
+expect(updated_order.customer).to eq "Davros"
+expect(updated_order.date).to eq "1066-02-12"
+expect(updated_order.item_id).to eq 8
+expect(updated_order.id).to eq 6
 ```
 
 ## 7. Reload the SQL seeds before each test run

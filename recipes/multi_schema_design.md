@@ -40,10 +40,10 @@ I want to be able to create a new order.
 ## 2. Infer the Table Name and Columns
 Put the different nouns in this table. Replace the example with your own nouns.
 
-| Record	   | Properties             |
-| ---------- | ---------------------- |
-| items	     | name, price, quantity  |
-| orders	   | customer, date         |
+| Record	   | Properties               |
+| ---------- | ------------------------ |
+| items	     | name, price, quantity    |
+| orders	   | customer, date, item_id  |
 
 ## 3. Decide the column types.
 Here's a full documentation of [PostgreSQL data types](https://www.postgresql.org/docs/current/datatype.html).

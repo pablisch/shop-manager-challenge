@@ -18,8 +18,8 @@ INSERT INTO items (name, price, quantity) VALUES
 INSERT INTO orders (customer, date, item_id) VALUES 
 ('Doctor Who', '2056-04-13', 2),
 ('Voldermort', '2005-04-01', 9),
-('Chewbacca', '1977-06-23', 8),
-('Perseus', '10-01-15', 8),
+('Chewbacca', '1977-06-23', 1),
+('Perseus', '10-01-15', 1),
 ('Harry Potter', '2013-08-01', 4),
 ('Sun Ra', '1979-12-31', 3)
 ;
