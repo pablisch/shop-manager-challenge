@@ -13,18 +13,13 @@ class Application
   end
 
   def run
-    # clear()
+    clear()
     say "Welcome to the shop manager program."
     end_program = false
     until end_program
       user_action = main_menu()
       end_program = true if user_action == "exit"
-      # end_program = true
-      # loop do 
-        
-      #   break
-      # end
-    # end_program = true
+      end_program = true
     end
   end
 
@@ -46,20 +41,21 @@ class Application
         list_orders()
       when "4"
         create_order()
-      when "9"
-        # clear()
+      when "reset"
+        reset_items_and_orders()
+      when "q"
+        clear()
         say "\nGoodbye!"
         return "exit"
         # exit ### ALSO EXITS RSPEC TESTS IF UNCOMMENTED
       else
-        # clear()
+        clear()
         say "\nSorry, #{main_choice} was not an option."
-        # main_menu()
     end
   end
 
   def list_items
-    # clear()
+    clear()
     say "\nCurrent shop items:\n\n"
     items = @item_repository.all.sort_by{ |item| item.id }
     items.each do |item|
@@ -73,7 +69,7 @@ class Application
   end
 
   def list_orders
-    # clear()
+    clear()
     say "\nAll orders:\n\n"
     @order_repository.all.each do |purchase|
       say "#%2.i %13.13s  -  Date: %10.10s  -  Ordered Item Ref: %2.i" % [purchase.id, purchase.customer, purchase.date, purchase.item_id] 
@@ -81,7 +77,7 @@ class Application
   end
 
   def create_item
-    # clear()
+    clear()
     item = Item.new
     say ""
     name = get_string_for("name", "item").capitalize
@@ -94,7 +90,7 @@ class Application
   end
 
   def create_order
-    # clear()
+    clear()
     order = Order.new
     say ""
     order.customer = get_string_for("customer", "order").gsub(/\w+/){ |word| word.capitalize }
@@ -108,8 +104,8 @@ class Application
       say "Item ##{item_requested} cannot be found."
     elsif request_return[0] > 0
       order.item_id = item_requested
-      p order
       @order_repository.create(order)
+      say ""
       say "An order has been raised for #{order.customer}. Order confirmed for item ##{item_requested}, #{request_return[1]}, on #{order.date}."
     else 
       say "Sorry, item ##{item_requested}, #{request_return[1]}, is no longer in stock."
@@ -118,7 +114,7 @@ class Application
 
   def get_string_for(attribute, item_or_order)
     loop do
-      str = ask_inline "#{attribute.capitalize} of new #{item_or_order}: "
+      str = ask_inline "#{attribute.capitalize} for new #{item_or_order}: "
       return str if str.scan(/[a-zA-Z]/).length > 0
       say "The #{attribute} must contain at least one letter character."
     end
@@ -126,7 +122,7 @@ class Application
 
   def get_number_for(attribute, item_or_order)
     loop do
-      num = ask_inline "#{attribute.capitalize} of new #{item_or_order}: "
+      num = ask_inline "#{attribute.capitalize} for new #{item_or_order}: "
       return num if num.to_s.match?(/^(\d{1,8}\.?\d{0,2})$/) && attribute == "price"
       return num if num.to_s.match?(/^(\d{1,8})$/)
       say "The #{attribute} cannot be '#{num}'."
@@ -165,6 +161,12 @@ class Application
   def ask_inline(question)
     @io.print(question)
     @io.gets.chomp
+  end
+
+  def reset_items_and_orders
+    seed_sql = File.read('spec/seeds.sql')
+    connection = PG.connect({ host: '127.0.0.1', dbname: 'shop_manager' })
+    connection.exec(seed_sql)
   end
 end
 
