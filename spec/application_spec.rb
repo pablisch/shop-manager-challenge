@@ -10,6 +10,8 @@ def reset_tables
   connection.exec(seed_sql)
 end
 
+
+
 RSpec.describe Application do
   before(:each) do
     reset_tables
@@ -17,22 +19,35 @@ RSpec.describe Application do
   let(:io) { double(:io) }
   let(:app) { Application.new('shop_manager_test', io, ItemRepository.new, OrderRepository.new) }
 
-  it "prints a welcome" do
+  def main_menu_expectations # the code that is always run when app.rb starts
     expect(io).to receive(:puts).with("Welcome to the shop manager program.").ordered
     expect(io).to receive(:puts).with("\nWhat do you want to do?").ordered
     expect(io).to receive(:puts).with("  1 = list all shop items").ordered
     expect(io).to receive(:puts).with("  2 = create a new item").ordered
     expect(io).to receive(:puts).with("  3 = list all orders").ordered
-    expect(io).to receive(:puts).with("  4 = create a new order").ordered
-    expect(io).to receive(:puts).with("  9 = quit shop manager program\n\n").ordered
+    expect(io).to receive(:puts).with("  4 = create a new order\n\n").ordered
+  end
+
+  it "prints a welcome" do
+    # expect(io).to receive(:puts).with("Welcome to the shop manager program.").ordered
+    main_menu_expectations()
     expect(io).to receive(:gets).and_return("9").ordered
     expect(io).to receive(:puts).with("\nGoodbye!").ordered
-    # expect(io).to receive(:puts).with("\nSorry, 5 was not an option.").ordered
     app.run
-    
-    
-    
   end
+  
+  it "prints a welcome" do
+    main_menu_expectations()
+    expect(io).to receive(:gets).and_return("5").ordered
+    expect(io).to receive(:puts).with("\nSorry, 5 was not an option.").ordered
+    app.run
+  end
+
+  it "outputs a list of all items" do
+    expect(io).to receive(:puts).with("list 1")
+    app.list("1")
+  end
+
 
 end
 

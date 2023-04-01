@@ -14,8 +14,15 @@ class Application
   def run
     # clear()
     say "Welcome to the shop manager program."
-    main_menu()
-
+  end_program = false
+    until end_program
+      main_menu()
+      # loop do 
+        
+      #   break
+      # end
+    end_program = true
+    end
   end
 
   def main_menu
@@ -23,30 +30,30 @@ class Application
     say "  1 = list all shop items"
     say "  2 = create a new item"
     say "  3 = list all orders"
-    say "  4 = create a new order"
-    choice = ask "  9 = quit shop manager program\n\n"
-    main_menu_handler(choice)
+    main_menu_handler(ask "  4 = create a new order\n\n")
   end
 
-  def main_menu_handler(choice)
-    case choice
+  def main_menu_handler(main_choice)
+    case main_choice
       when "1"
-        list(choice)
+        list(main_choice)
       when "2"
-        create(choice)
+        create(main_choice)
       when "9"
         # clear()
         say "\nGoodbye!"
         # exit ### ALSO EXITS RSPEC TESTS IF UNCOMMENTED
       else
         # clear()
-        say "\nSorry, #{choice} was not an option."
-        main_menu()
+        say "\nSorry, #{main_choice} was not an option."
+        # main_menu()
     end
   end
 
   def list(choice)
-    say "You chose #{choice}"
+    # clear()
+    items = choice
+    say "list #{items}"
   end
 
   def create(choice)
