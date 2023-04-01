@@ -10,10 +10,20 @@ class ItemRepository
     return items
   end
 
+  def all_ids
+    sql = 'SELECT * FROM items;'
+    results = DatabaseConnection.exec_params(sql, [])
+    items = []
+    results.each{ |record| items << write_item(record) }
+    item_ids = items.map{ |item| item.id}
+    return item_ids
+  end
+
   def find(id)
     sql = 'SELECT * FROM items WHERE id = $1;'
     params = [id]
     results = DatabaseConnection.exec_params(sql, params)
+    fail "There is no such item." if results.ntuples == 0
     record = results[0]
     write_item(record)
   end

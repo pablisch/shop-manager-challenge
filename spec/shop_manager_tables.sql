@@ -1,7 +1,7 @@
 CREATE TABLE items (   -- the table that represents one, NOT many
   id SERIAL PRIMARY KEY,
   price money,
-  quantity date,
+  quantity int,
 );
 
 -- Then the table with the foreign key first.

@@ -54,6 +54,12 @@ RSpec.describe ItemRepository do
       expect(item.price).to eq 20
       expect(item.quantity).to eq 41
     end
+
+    it "fail when there is no item selected by id 10" do
+      repo = ItemRepository.new
+      id_to_find = 10
+      expect { item = repo.find(id_to_find) }.to raise_error "There is no such item."
+    end
   end
 
   context "#create" do
@@ -175,4 +181,8 @@ RSpec.describe ItemRepository do
     end
   end
 
+  it "returns id for all Item objects #1" do
+    repo = ItemRepository.new
+    expect(repo.all_ids).to eq [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  end
 end
