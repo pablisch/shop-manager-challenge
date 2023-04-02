@@ -3,8 +3,8 @@ require 'item_repository'
 RSpec.describe ItemRepository do
 
   def reset_tables
-    seed_sql = File.read('spec/seeds.sql')
-    connection = PG.connect({ host: '127.0.0.1', dbname: 'shop_manager_test' })
+    seed_sql = File.read('spec/seeds_m2m.sql')
+    connection = PG.connect({ host: '127.0.0.1', dbname: 'shop_manager_m2m_test' })
     connection.exec(seed_sql)
   end
 
@@ -145,39 +145,42 @@ RSpec.describe ItemRepository do
   end
 
   context "#find_with_orders" do
-    it "selects a single item and all associated orders based on an item id of 1" do
+    it "selects a single item and all associated orders based on an item id of 1 where there are no associated orders" do
       repo = ItemRepository.new
       find_by_id = 1
       item = repo.find_with_orders(find_by_id)
       expect(item.id).to eq 1
       expect(item.name).to eq 'Vorpal blade'
-      expect(item.orders.length).to eq 2
-      expect(item.orders[0].customer).to eq 'Chewbacca'
-      expect(item.orders[0].date).to eq '1977-06-23'
-      expect(item.orders[0].id).to eq 3
-    end
-
-    it "selects a single item and all associated orders based on an item id of 4" do
-      repo = ItemRepository.new
-      find_by_id = 4
-      item = repo.find_with_orders(find_by_id)
-      expect(item.id).to eq 4
-      expect(item.name).to eq 'The Ultimate Nullifier'
-      expect(item.orders.length).to eq 1
-      expect(item.orders[0].customer).to eq 'Harry Potter'
-      expect(item.orders[0].date).to eq '2013-08-01'
-      expect(item.orders[0].id).to eq 5
-    end
-
-    it "selects a single item and all associated orders based on an item id of 8" do
-      repo = ItemRepository.new
-      find_by_id = 8
-      item = repo.find_with_orders(find_by_id)
-      expect(item.id).to eq 8
-      expect(item.name).to eq 'AT-AT'
-      expect(item.price).to eq 2350.0
-      expect(item.quantity).to eq 2
       expect(item.orders.length).to eq 0
+    end
+
+    it "selects a single item and all associated orders based on an item id of 2 with a single order" do
+      repo = ItemRepository.new
+      find_by_id = 2
+      item = repo.find_with_orders(find_by_id)
+      expect(item.id).to eq 2
+      expect(item.name).to eq 'Tardis'
+      expect(item.orders.length).to eq 1
+      expect(item.orders[0].customer).to eq 'Doctor Who'
+      expect(item.orders[0].date).to eq '2056-04-13'
+      expect(item.orders[0].id).to eq 1
+    end
+
+    it "selects a single item and all associated orders based on an item id of 5 with multiple orders" do
+      repo = ItemRepository.new
+      find_by_id = 5
+      item = repo.find_with_orders(find_by_id)
+      expect(item.id).to eq 5
+      expect(item.name).to eq 'Elder wand'
+      expect(item.price).to eq 56.78
+      expect(item.quantity).to eq 0
+      expect(item.orders.length).to eq 2
+      expect(item.orders[0].customer).to eq 'Voldermort'
+      expect(item.orders[0].date).to eq '2005-04-01'
+      expect(item.orders[0].id).to eq 2
+      expect(item.orders[1].customer).to eq 'Harry Potter'
+      expect(item.orders[1].date).to eq '2013-08-01'
+      expect(item.orders[1].id).to eq 5
     end
   end
 

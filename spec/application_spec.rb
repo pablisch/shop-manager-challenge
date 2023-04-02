@@ -5,8 +5,8 @@ require 'order'
 require 'order_repository'
 
 def reset_tables
-  seed_sql = File.read('spec/seeds.sql')
-  connection = PG.connect({ host: '127.0.0.1', dbname: 'shop_manager_test' })
+  seed_sql = File.read('spec/seeds_m2m.sql')
+  connection = PG.connect({ host: '127.0.0.1', dbname: 'shop_manager_m2m_test' })
   connection.exec(seed_sql)
 end
 
@@ -15,7 +15,7 @@ RSpec.describe Application do
     reset_tables
   end
   let(:io) { double(:io) }
-  let(:app) { Application.new('shop_manager_test', io, ItemRepository.new, OrderRepository.new) }
+  let(:app) { Application.new('shop_manager_m2m_test', io, ItemRepository.new, OrderRepository.new) }
 
   context "#main_menu, #main_menu_handler" do
     it "prints a welcome" do
@@ -215,12 +215,12 @@ end
 
 def list_orders_expectations # rspec expectations for #list_orders
   expect(io).to receive(:puts).with("\nAll orders:\n\n")
-  expect(io).to receive(:puts).with("# 1    Doctor Who  -  Date: 2056-04-13  -  Ordered Item Ref:  2")
-  expect(io).to receive(:puts).with("# 2    Voldermort  -  Date: 2005-04-01  -  Ordered Item Ref:  9")
-  expect(io).to receive(:puts).with("# 3     Chewbacca  -  Date: 1977-06-23  -  Ordered Item Ref:  1")
-  expect(io).to receive(:puts).with("# 4       Perseus  -  Date: 0101-01-15  -  Ordered Item Ref:  1")
-  expect(io).to receive(:puts).with("# 5  Harry Potter  -  Date: 2013-08-01  -  Ordered Item Ref:  4")
-  expect(io).to receive(:puts).with("# 6        Sun Ra  -  Date: 1979-12-31  -  Ordered Item Ref:  3")
+  expect(io).to receive(:puts).with("# 1    Doctor Who  -  Date: 2056-04-13  -  Order item/s: Tardis")
+  expect(io).to receive(:puts).with("# 2    Voldermort  -  Date: 2005-04-01  -  Order item/s: Elder wand, Horcrux")
+  expect(io).to receive(:puts).with("# 3     Chewbacca  -  Date: 1977-06-23  -  Order item/s: AT-AT")
+  expect(io).to receive(:puts).with("# 4       Perseus  -  Date: 0101-01-15  -  Order item/s: Winged helmet")
+  expect(io).to receive(:puts).with("# 5  Harry Potter  -  Date: 2013-08-01  -  Order item/s: Elder wand")
+  expect(io).to receive(:puts).with("# 6        Sun Ra  -  Date: 1979-12-31  -  Order item/s: Scarab beetle")
 end
 
 

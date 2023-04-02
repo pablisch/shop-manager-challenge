@@ -3,8 +3,8 @@ require 'order_repository'
 RSpec.describe OrderRepository do
 
   def reset_tables
-    seed_sql = File.read('spec/seeds.sql')
-    connection = PG.connect({ host: '127.0.0.1', dbname: 'shop_manager_test' })
+    seed_sql = File.read('spec/seeds_m2m.sql')
+    connection = PG.connect({ host: '127.0.0.1', dbname: 'shop_manager_m2m_test' })
     connection.exec(seed_sql)
   end
 
@@ -20,7 +20,6 @@ RSpec.describe OrderRepository do
       expect(orders.first.id).to eq 1
       expect(orders.first.customer).to eq 'Doctor Who'
       expect(orders.first.date).to eq '2056-04-13'
-      expect(orders.first.item_id).to eq 2
     end
 
     it "returns attr/s for all Order objects #2" do
@@ -30,7 +29,6 @@ RSpec.describe OrderRepository do
       expect(orders.last.id).to eq 6
       expect(orders.last.customer).to eq 'Sun Ra'
       expect(orders.last.date).to eq '1979-12-31'
-      expect(orders.last.item_id).to eq 3
     end
   end
 
@@ -42,7 +40,6 @@ RSpec.describe OrderRepository do
       expect(order.id).to eq 1
       expect(order.customer).to eq 'Doctor Who'
       expect(order.date).to eq '2056-04-13'
-      expect(order.item_id).to eq 2
     end
 
     it "returns a single Order object selected by id 4" do
@@ -52,7 +49,6 @@ RSpec.describe OrderRepository do
       expect(order.id).to eq 4
       expect(order.customer).to eq 'Perseus'
       expect(order.date).to eq '0101-01-15'
-      expect(order.item_id).to eq 1
     end
   end
 
@@ -62,13 +58,11 @@ RSpec.describe OrderRepository do
       order = Order.new
       order.customer = 'Luke Skywalker'
       order.date = '2056-04-13'
-      order.item_id = 4
       repo.create(order)
       orders = repo.all
       expect(orders[-1].id).to eq 7
       expect(orders[-1].customer).to eq 'Luke Skywalker'
       expect(orders[-1].date).to eq '2056-04-13'
-      expect(orders[-1].item_id).to eq 4
     end
 
     it "inserts a single Order object #2" do
@@ -76,13 +70,11 @@ RSpec.describe OrderRepository do
       order = Order.new
       order.customer = 'The Cat in the Hat'
       order.date = '1967-11-20'
-      order.item_id = 7
       repo.create(order)
       orders = repo.all
       expect(orders[-1].id).to eq 7
       expect(orders[-1].customer).to eq 'The Cat in the Hat'
       expect(orders[-1].date).to eq '1967-11-20'
-      expect(orders[-1].item_id).to eq 7
     end
   end
 
@@ -113,12 +105,10 @@ RSpec.describe OrderRepository do
       order = repo.find(id_to_update)
       order.customer = "Davros"
       order.date = "1066-02-12"
-      order.item_id = 8
       repo.update(order)
       updated_order = repo.find(id_to_update)
       expect(updated_order.customer).to eq "Davros"
       expect(updated_order.date).to eq "1066-02-12"
-      expect(updated_order.item_id).to eq 8
       expect(updated_order.id).to eq 1
     end
 
@@ -132,7 +122,6 @@ RSpec.describe OrderRepository do
       updated_order = repo.find(id_to_update)
       expect(updated_order.customer).to eq "Captain Marvel"
       expect(updated_order.date).to eq "1977-06-23"
-      expect(updated_order.item_id).to eq 7
       expect(updated_order.id).to eq 3
     end
   end
