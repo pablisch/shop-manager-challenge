@@ -47,11 +47,11 @@ class ItemRepository
   end
 
   def find_with_orders(id)
-    sql = 'SELECT items.id, items.name, items.price, items.quantity, orders.customer, orders.date, orders.id AS "order_id"
-    FROM items
-    JOIN orders
-    ON orders.item_id = items.id
-    WHERE items.id = $1;'
+    sql = 'SELECT items.id, items.name, items.price, items.quantity, orders.id AS "order_id", orders.customer, orders.date
+    FROM orders 
+      JOIN items_orders ON items_orders.order_id = orders.id
+      JOIN items ON items_orders.item_id = items.id
+      WHERE items.id = $1;'
     params = [id]
     results = DatabaseConnection.exec_params(sql, params)
     return find(id) if results.ntuples == 0
