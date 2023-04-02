@@ -10,8 +10,6 @@ def reset_tables
   connection.exec(seed_sql)
 end
 
-
-
 RSpec.describe Application do
   before(:each) do
     reset_tables
@@ -19,53 +17,48 @@ RSpec.describe Application do
   let(:io) { double(:io) }
   let(:app) { Application.new('shop_manager_test', io, ItemRepository.new, OrderRepository.new) }
 
-  def main_menu_expectations # the code that is always run when app.rb starts
-    expect(io).to receive(:puts).with("Welcome to the shop manager program.").ordered
-    expect(io).to receive(:puts).with("\nWhat do you want to do?").ordered
-    expect(io).to receive(:puts).with("  1 = list all shop items").ordered
-    expect(io).to receive(:puts).with("  2 = create a new item").ordered
-    expect(io).to receive(:puts).with("  3 = list all orders").ordered
-    expect(io).to receive(:puts).with("  4 = create a new order\n\n").ordered
+  context "#main_menu, #main_menu_handler" do
+    it "prints a welcome" do
+      main_menu_expectations()
+      expect(io).to receive(:gets).and_return("q").ordered
+      expect(io).to receive(:puts).with("\nGoodbye!").ordered
+      app.run
+    end
+
+    it "prints a welcome and exits when " do
+      main_menu_expectations()
+      expect(io).to receive(:gets).and_return("6").ordered
+      expect(io).to receive(:puts).with("\nSorry, 6 was not an option.").ordered
+      app.run
+    end
   end
 
-  it "prints a welcome" do
-    # expect(io).to receive(:puts).with("Welcome to the shop manager program.").ordered
-    main_menu_expectations()
-    expect(io).to receive(:gets).and_return("q").ordered
-    expect(io).to receive(:puts).with("\nGoodbye!").ordered
-    app.run
-  end
-  
-  it "prints a welcome and exits when " do
-    main_menu_expectations()
-    expect(io).to receive(:gets).and_return("6").ordered
-    expect(io).to receive(:puts).with("\nSorry, 6 was not an option.").ordered
-    app.run
+  context "#list_items" do
+    it "outputs a list of all items" do
+      list_items_expectations()
+      app.list_items
+    end
+
+    it "call #list_items" do
+      main_menu_expectations()
+      expect(io).to receive(:gets).and_return("1").ordered
+      list_items_expectations()
+      app.run
+    end
   end
 
-  it "outputs a list of all items" do
-    expect(io).to receive(:puts).with("\nCurrent shop items:\n\n")
-    expect(io).to receive(:puts).with("Item  1            Vorpal blade  -  Price(£):      34.99  -  Quantity:    20")
-    expect(io).to receive(:puts).with("Item  2                  Tardis  -  Price(£):     139.50  -  Quantity:     3")
-    expect(io).to receive(:puts).with("Item  3           Scarab beetle  -  Price(£):      10.99  -  Quantity:   300")
-    expect(io).to receive(:puts).with("Item  4  The Ultimate Nullifier  -  Price(£): 2000000.00  -  Quantity:     1")
-    expect(io).to receive(:puts).with("Item  5              Elder wand  -  Price(£):      56.78  -  Quantity:     1")
-    expect(io).to receive(:puts).with("Item  6           Winged helmet  -  Price(£):      14.69  -  Quantity:    45")
-    expect(io).to receive(:puts).with("Item  7          Flux capacitor  -  Price(£):      20.00  -  Quantity:    41")
-    expect(io).to receive(:puts).with("Item  8                   AT-AT  -  Price(£):    2350.00  -  Quantity:     2")
-    expect(io).to receive(:puts).with("Item  9                 Horcrux  -  Price(£):       0.50  -  Quantity:     7")
-    app.list_items
-  end
+  context "#list_orders" do
+    it "outputs a list of all orders" do
+      list_orders_expectations()
+      app.list_orders
+    end
 
-  it "outputs a list of all orders" do
-    expect(io).to receive(:puts).with("\nAll orders:\n\n")
-    expect(io).to receive(:puts).with("# 1    Doctor Who  -  Date: 2056-04-13  -  Ordered Item Ref:  2")
-    expect(io).to receive(:puts).with("# 2    Voldermort  -  Date: 2005-04-01  -  Ordered Item Ref:  9")
-    expect(io).to receive(:puts).with("# 3     Chewbacca  -  Date: 1977-06-23  -  Ordered Item Ref:  1")
-    expect(io).to receive(:puts).with("# 4       Perseus  -  Date: 0101-01-15  -  Ordered Item Ref:  1")
-    expect(io).to receive(:puts).with("# 5  Harry Potter  -  Date: 2013-08-01  -  Ordered Item Ref:  4")
-    expect(io).to receive(:puts).with("# 6        Sun Ra  -  Date: 1979-12-31  -  Ordered Item Ref:  3")
-    app.list_orders
+    it "call #order_items" do
+      main_menu_expectations()
+      expect(io).to receive(:gets).and_return("3").ordered
+      list_orders_expectations()
+      app.run
+    end
   end
 
   context "create new item" do
@@ -101,30 +94,25 @@ RSpec.describe Application do
       expect(io).to receive(:puts).with("Golden toothpick has been added to the inventory with price set at £10.00 and quantity set to 25.").ordered
       app.create_item
     end
+
+    it "calls #create_item" do
+      main_menu_expectations()
+      expect(io).to receive(:gets).and_return("2").ordered
+      expect(io).to receive(:puts).with("").ordered
+      expect(io).to receive(:print).with("Name for new item: ").ordered
+      expect(io).to receive(:gets).and_return("spanner").ordered
+      expect(io).to receive(:print).with("Price for new item: ").ordered
+      expect(io).to receive(:gets).and_return("23.5").ordered
+      expect(io).to receive(:print).with("Quantity for new item: ").ordered
+      expect(io).to receive(:gets).and_return("50").ordered
+      expect(io).to receive(:puts).with("Spanner has been added to the inventory with price set at £23.50 and quantity set to 50.").ordered
+      app.run
+    end
   end
 
   context "create new order" do
     it "goes through the process of creating a new order first time" do
-      expect(io).to receive(:puts).with("").ordered
-      expect(io).to receive(:print).with("Customer for new order: ").ordered
-      expect(io).to receive(:gets).and_return("john doe").ordered
-      expect(Time).to receive(:now).and_return(Time.new(2023, 04, 01)).ordered
-      expect(io).to receive(:puts).with("The order date is 2023-04-01.").ordered
-      expect(io).to receive(:puts).with("").ordered
-      expect(io).to receive(:puts).with("\nCurrent shop items:\n\n")
-      expect(io).to receive(:puts).with("Item  1            Vorpal blade  -  Price(£):      34.99  -  Quantity:    20")
-      expect(io).to receive(:puts).with("Item  2                  Tardis  -  Price(£):     139.50  -  Quantity:     3")
-      expect(io).to receive(:puts).with("Item  3           Scarab beetle  -  Price(£):      10.99  -  Quantity:   300")
-      expect(io).to receive(:puts).with("Item  4  The Ultimate Nullifier  -  Price(£): 2000000.00  -  Quantity:     1")
-      expect(io).to receive(:puts).with("Item  5              Elder wand  -  Price(£):      56.78  -  Quantity:     1")
-      expect(io).to receive(:puts).with("Item  6           Winged helmet  -  Price(£):      14.69  -  Quantity:    45")
-      expect(io).to receive(:puts).with("Item  7          Flux capacitor  -  Price(£):      20.00  -  Quantity:    41")
-      expect(io).to receive(:puts).with("Item  8                   AT-AT  -  Price(£):    2350.00  -  Quantity:     2")
-      expect(io).to receive(:puts).with("Item  9                 Horcrux  -  Price(£):       0.50  -  Quantity:     7")
-      expect(io).to receive(:print).with("What would you like to order? [item number] ").ordered
-      expect(io).to receive(:gets).and_return("4").ordered
-      expect(io).to receive(:puts).with("").ordered
-      expect(io).to receive(:puts).with("An order has been raised for John Doe. Order confirmed for item #4, The Ultimate Nullifier, on 2023-04-01.").ordered
+      create_order_expectations()
       app.create_order
     end
     
@@ -138,20 +126,35 @@ RSpec.describe Application do
       expect(Time).to receive(:now).and_return(Time.new(2023, 04, 01)).ordered
       expect(io).to receive(:puts).with("The order date is 2023-04-01.").ordered
       expect(io).to receive(:puts).with("").ordered
-      expect(io).to receive(:puts).with("\nCurrent shop items:\n\n")
-      expect(io).to receive(:puts).with("Item  1            Vorpal blade  -  Price(£):      34.99  -  Quantity:    20")
-      expect(io).to receive(:puts).with("Item  2                  Tardis  -  Price(£):     139.50  -  Quantity:     3")
-      expect(io).to receive(:puts).with("Item  3           Scarab beetle  -  Price(£):      10.99  -  Quantity:   300")
-      expect(io).to receive(:puts).with("Item  4  The Ultimate Nullifier  -  Price(£): 2000000.00  -  Quantity:     1")
-      expect(io).to receive(:puts).with("Item  5              Elder wand  -  Price(£):      56.78  -  Quantity:     1")
-      expect(io).to receive(:puts).with("Item  6           Winged helmet  -  Price(£):      14.69  -  Quantity:    45")
-      expect(io).to receive(:puts).with("Item  7          Flux capacitor  -  Price(£):      20.00  -  Quantity:    41")
-      expect(io).to receive(:puts).with("Item  8                   AT-AT  -  Price(£):    2350.00  -  Quantity:     2")
-      expect(io).to receive(:puts).with("Item  9                 Horcrux  -  Price(£):       0.50  -  Quantity:     7")
+      list_items_expectations()
       expect(io).to receive(:print).with("What would you like to order? [item number] ").ordered
       expect(io).to receive(:gets).and_return("10").ordered
       expect(io).to receive(:puts).with("Item #10 cannot be found.").ordered
       app.create_order
+    end
+
+    it "goes through the process of creating a new order where the item is unavailable" do
+      expect(io).to receive(:puts).with("").ordered
+      expect(io).to receive(:print).with("Customer for new order: ").ordered
+      expect(io).to receive(:gets).and_return("13").ordered
+      expect(io).to receive(:puts).with("The customer must contain at least one letter character.").ordered
+      expect(io).to receive(:print).with("Customer for new order: ").ordered
+      expect(io).to receive(:gets).and_return("jane doe").ordered
+      expect(Time).to receive(:now).and_return(Time.new(2023, 04, 01)).ordered
+      expect(io).to receive(:puts).with("The order date is 2023-04-01.").ordered
+      expect(io).to receive(:puts).with("").ordered
+      list_items_expectations()
+      expect(io).to receive(:print).with("What would you like to order? [item number] ").ordered
+      expect(io).to receive(:gets).and_return("5").ordered
+      expect(io).to receive(:puts).with("Sorry, item #5, Elder wand, is no longer in stock.").ordered
+      app.create_order
+    end
+
+    it "calls #create_order" do
+      main_menu_expectations()
+      expect(io).to receive(:gets).and_return("4").ordered
+      create_order_expectations()
+      app.run
     end
   end
   
@@ -172,6 +175,54 @@ RSpec.describe Application do
     app.ask("Who?")
   end
 
-
 end
+
+def main_menu_expectations # the code that is always run when app.rb starts
+  expect(io).to receive(:puts).with("Welcome to the shop manager program.").ordered
+  expect(io).to receive(:puts).with("\nWhat do you want to do?").ordered
+  expect(io).to receive(:puts).with("  1 = list all shop items").ordered
+  expect(io).to receive(:puts).with("  2 = create a new item").ordered
+  expect(io).to receive(:puts).with("  3 = list all orders").ordered
+  expect(io).to receive(:puts).with("  4 = create a new order\n\n").ordered
+end
+
+def list_items_expectations # rspec expectations for #list_items
+  expect(io).to receive(:puts).with("\nCurrent shop items:\n\n")
+  expect(io).to receive(:puts).with("Item  1            Vorpal blade  -  Price(£):      34.99  -  Quantity:    20")
+  expect(io).to receive(:puts).with("Item  2                  Tardis  -  Price(£):     139.50  -  Quantity:     3")
+  expect(io).to receive(:puts).with("Item  3           Scarab beetle  -  Price(£):      10.99  -  Quantity:   300")
+  expect(io).to receive(:puts).with("Item  4  The Ultimate Nullifier  -  Price(£): 2000000.00  -  Quantity:     1")
+  expect(io).to receive(:puts).with("Item  5              Elder wand  -  Price(£):      56.78  -  Quantity:     0")
+  expect(io).to receive(:puts).with("Item  6           Winged helmet  -  Price(£):      14.69  -  Quantity:    45")
+  expect(io).to receive(:puts).with("Item  7          Flux capacitor  -  Price(£):      20.00  -  Quantity:    41")
+  expect(io).to receive(:puts).with("Item  8                   AT-AT  -  Price(£):    2350.00  -  Quantity:     2")
+  expect(io).to receive(:puts).with("Item  9                 Horcrux  -  Price(£):       0.50  -  Quantity:     7")
+end
+
+def create_order_expectations
+  expect(io).to receive(:puts).with("").ordered
+  expect(io).to receive(:print).with("Customer for new order: ").ordered
+  expect(io).to receive(:gets).and_return("john doe").ordered
+  expect(Time).to receive(:now).and_return(Time.new(2023, 04, 01)).ordered
+  expect(io).to receive(:puts).with("The order date is 2023-04-01.").ordered
+  expect(io).to receive(:puts).with("").ordered
+  list_items_expectations()
+  expect(io).to receive(:print).with("What would you like to order? [item number] ").ordered
+  expect(io).to receive(:gets).and_return("4").ordered
+  expect(io).to receive(:puts).with("").ordered
+  expect(io).to receive(:puts).with("An order has been raised for John Doe. Order confirmed for item #4, The Ultimate Nullifier, on 2023-04-01.").ordered
+end
+
+def list_orders_expectations
+  expect(io).to receive(:puts).with("\nAll orders:\n\n")
+  expect(io).to receive(:puts).with("# 1    Doctor Who  -  Date: 2056-04-13  -  Ordered Item Ref:  2")
+  expect(io).to receive(:puts).with("# 2    Voldermort  -  Date: 2005-04-01  -  Ordered Item Ref:  9")
+  expect(io).to receive(:puts).with("# 3     Chewbacca  -  Date: 1977-06-23  -  Ordered Item Ref:  1")
+  expect(io).to receive(:puts).with("# 4       Perseus  -  Date: 0101-01-15  -  Ordered Item Ref:  1")
+  expect(io).to receive(:puts).with("# 5  Harry Potter  -  Date: 2013-08-01  -  Ordered Item Ref:  4")
+  expect(io).to receive(:puts).with("# 6        Sun Ra  -  Date: 1979-12-31  -  Ordered Item Ref:  3")
+end
+
+
+
 

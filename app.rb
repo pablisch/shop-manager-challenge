@@ -19,7 +19,7 @@ class Application
     until end_program
       user_action = main_menu()
       end_program = true if user_action == "exit"
-      end_program = true
+      end_program = true ### UNCOMMENT THIS LINE WHEN RUNNING RSPEC ###
     end
   end
 
@@ -90,25 +90,48 @@ class Application
 
   def create_order
     clear()
-    order = Order.new
+    new_order = Order.new
     say ""
-    order.customer = get_string_for("customer", "order").gsub(/\w+/){ |word| word.capitalize }
-    order.date = Time.now.strftime("%Y-%m-%d")
-    say "The order date is #{order.date}."
+    new_order.customer = get_string_for("customer", "order").gsub(/\w+/){ |word| word.capitalize }
+    new_order.date = Time.now.strftime("%Y-%m-%d")
+    say "The order date is #{new_order.date}."
     list_items()
     say ""
     item_requested = ask_inline "What would you like to order? [item number] "
-    request_return = item_available?(item_requested)
-    if request_return[1] == "NA"
-      say "Item ##{item_requested} cannot be found."
-    elsif request_return[0] > 0
-      order.item_id = item_requested
-      @order_repository.create(order)
+    availability_hash = item_available?(item_requested) # checks availability and updates quantity
+    order_creation_handling(availability_hash, new_order) # creates order if item is available
+  end
+
+  def order_creation_handling(availability_hash, new_order)
+    if availability_hash[:item_name] == "NA"
+      say "Item ##{availability_hash[:item_id]} cannot be found."
+    elsif availability_hash[:stock] > 0
+      new_order.item_id = availability_hash[:item_id]
+      @order_repository.create(new_order)
       say ""
-      say "An order has been raised for #{order.customer}. Order confirmed for item ##{item_requested}, #{request_return[1]}, on #{order.date}."
+      say "An order has been raised for #{new_order.customer}. Order confirmed for item ##{availability_hash[:item_id]}, #{availability_hash[:item_name]}, on #{new_order.date}."
     else 
-      say "Sorry, item ##{item_requested}, #{request_return[1]}, is no longer in stock."
+      say "Sorry, item ##{availability_hash[:item_id]}, #{availability_hash[:item_name]}, is no longer in stock."
     end
+  end
+
+  def item_available?(id)
+    exists = @item_repository.all_ids # returns an array of item ids
+    if exists.include?(id.to_i)
+      return update_items_when_ordering(id) # returns a hash { stock:, item_id:, item_name:}
+    else
+      return { stock: 0, item_id: id, item_name: "NA" } # previously => [stock, "NA"]
+    end
+  end
+
+  def update_items_when_ordering(id)
+    item = @item_repository.find(id) # find requested item by id
+    stock = item.quantity
+    if stock >= 1
+      item.quantity -= 1 # check stock and reducd by one if possible
+      @item_repository.update(item) # update items list
+    end
+    return { stock: stock, item_id: id, item_name: item.name } # previously => [stock, item.name]
   end
 
   def get_string_for(attribute, item_or_order)
@@ -131,25 +154,6 @@ class Application
     end
   end
 
-  def item_available?(id)
-    exists = @item_repository.all_ids # returns an array of item ids
-    if exists.include?(id.to_i)
-      item = @item_repository.find(id) # find requested item by id
-      stock = item.quantity
-      if stock >= 1
-        item.quantity -= 1 # check stock and reducd by one if possible
-        @item_repository.update(item) # update items list
-      end
-      return [stock, item.name]
-    else
-      stock = 0
-      return [stock, "NA"]
-    end
-  end
-
-  def update_items_when_ordering(id)
-    
-  end
 
   def clear
     system("clear")

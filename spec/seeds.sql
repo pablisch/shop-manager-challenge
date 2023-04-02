@@ -8,7 +8,7 @@ INSERT INTO items (name, price, quantity) VALUES
 ('Tardis', 139.5, 3),
 ('Scarab beetle', 10.99, 300),
 ('The Ultimate Nullifier', 2000000, 1),
-('Elder wand', 56.78, 1),
+('Elder wand', 56.78, 0),
 ('Winged helmet', 14.69, 45),
 ('Flux capacitor', 20, 41),
 ('AT-AT', 2350, 2),
