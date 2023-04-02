@@ -70,8 +70,10 @@ class Application
   def list_orders
     clear()
     say "\nAll orders:\n\n"
-    @order_repository.all.each do |purchase|
-      say "#%2.i %13.13s  -  Date: %10.10s  -  Ordered Item Ref: %2.i" % [purchase.id, purchase.customer, purchase.date, purchase.item_id] 
+    orders = @order_repository.get_all_orders_with_items
+    orders.each_with_index do |record, index|
+      ordered_items = record.items.map{ |item| item.name }
+      say "#%2.i %13.13s  -  Date: %10.10s  -  Order item/s: #{ordered_items.join(", ")}" % [record.id, record.customer, record.date] 
     end
   end
 
@@ -156,7 +158,7 @@ class Application
 
 
   def clear
-    system("clear")
+    # system("clear")
   end
 
   def say(message)
