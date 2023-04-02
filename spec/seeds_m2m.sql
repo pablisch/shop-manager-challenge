@@ -1,0 +1,36 @@
+TRUNCATE TABLE items, items_orders, orders RESTART IDENTITY; -- replace with your own table name.
+
+-- Below this line there should only be `INSERT` statements.
+-- Replace these statements with your own seed data.
+
+INSERT INTO items (name, price, quantity) VALUES 
+('Vorpal blade', 34.99 , 20), 
+('Tardis', 139.5, 3),
+('Scarab beetle', 10.99, 300),
+('The Ultimate Nullifier', 2000000, 1),
+('Elder wand', 56.78, 0),
+('Winged helmet', 14.69, 45),
+('Flux capacitor', 20, 41),
+('AT-AT', 2350, 2),
+('Horcrux', 0.5, 7)
+;
+
+INSERT INTO orders (customer, date) VALUES 
+('Doctor Who', '2056-04-13'),
+('Voldermort', '2005-04-01'),
+('Chewbacca', '1977-06-23'),
+('Perseus', '101-01-15'),
+('Harry Potter', '2013-08-01'),
+('Sun Ra', '1979-12-31')
+;
+
+INSERT INTO items_orders ("item_id", "order_id") VALUES
+(2, 1),
+(5, 2),
+(9, 2),
+(8, 3),
+(6, 4),
+(5, 5),
+(3, 6)
+;
+
