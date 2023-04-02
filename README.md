@@ -1,3 +1,7 @@
+Uses a one to many table realtionship as I had not properly explored many to many relationships.
+There is a many to many branch (m2m) though the new tables have not been properly integrated into the program yet.
+I need to look at program structures as the way I implemented my App#main_menu did not agree with rspec. I have put in an extra line of code (app.rb line 22) to make #main_menu only run a single time for testing purposes only.
+
 Shop Manager Project
 =================
 
