@@ -90,13 +90,3 @@ class OrderRepository
   end
 end
 
-DatabaseConnection.connect('shop_manager_m2m') # needed to run just this file when no connection is open
-repo = OrderRepository.new
-repo.get_all_orders_with_items.each do |item| 
-  p item
-  puts
-end
-# p repo.get_all_orders_with_items
-# res = repo.find_order_with_items(2)
-# p res.items
-# repo.find_order_with_items(2)
