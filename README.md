@@ -1,5 +1,8 @@
-This is version of the project with an many to many table relationship.
-This is my first use of many to many tables and has not been fully integrated into the program.
+
+This is version of the project with an many to many table relationship. 
+The original version was one to many as I had not properly explored many to many relationships.
+This is my first use of many to many tables and has not been fully integrated into the program. 
+What remains is to update the shared table so that new orders update with items ordered
 To be explored at a later date when I more time.
 
 Shop Manager Project
