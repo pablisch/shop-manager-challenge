@@ -177,7 +177,7 @@ RSpec.describe Application do
 
 end
 
-def main_menu_expectations # the code that is always run when app.rb starts
+def main_menu_expectations # rspec expectations when app.rb starts
   expect(io).to receive(:puts).with("Welcome to the shop manager program.").ordered
   expect(io).to receive(:puts).with("\nWhat do you want to do?").ordered
   expect(io).to receive(:puts).with("  1 = list all shop items").ordered
@@ -199,7 +199,7 @@ def list_items_expectations # rspec expectations for #list_items
   expect(io).to receive(:puts).with("Item  9                 Horcrux  -  Price(£):       0.50  -  Quantity:     7")
 end
 
-def create_order_expectations
+def create_order_expectations # rspec expectations for #create_order
   expect(io).to receive(:puts).with("").ordered
   expect(io).to receive(:print).with("Customer for new order: ").ordered
   expect(io).to receive(:gets).and_return("john doe").ordered
@@ -213,7 +213,7 @@ def create_order_expectations
   expect(io).to receive(:puts).with("An order has been raised for John Doe. Order confirmed for item #4, The Ultimate Nullifier, on 2023-04-01.").ordered
 end
 
-def list_orders_expectations
+def list_orders_expectations # rspec expectations for #list_orders
   expect(io).to receive(:puts).with("\nAll orders:\n\n")
   expect(io).to receive(:puts).with("# 1    Doctor Who  -  Date: 2056-04-13  -  Ordered Item Ref:  2")
   expect(io).to receive(:puts).with("# 2    Voldermort  -  Date: 2005-04-01  -  Ordered Item Ref:  9")
