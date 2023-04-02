@@ -47,7 +47,6 @@ class Application
         clear()
         say "\nGoodbye!"
         return "exit"
-        # exit ### ALSO EXITS RSPEC TESTS IF UNCOMMENTED
       else
         clear()
         say "\nSorry, #{main_choice} was not an option."
@@ -121,28 +120,35 @@ class Application
   end
 
   def get_number_for(attribute, item_or_order)
+    # ↓ loop to keep requesting for number until validated
     loop do
       num = ask_inline "#{attribute.capitalize} for new #{item_or_order}: "
+      # ↓ up to eight digits with possible decimal point and up to two decimal places
       return num if num.to_s.match?(/^(\d{1,8}\.?\d{0,2})$/) && attribute == "price"
-      return num if num.to_s.match?(/^(\d{1,8})$/)
+      # ↓ up to eight digits
+      return num if num.to_s.match?(/^(\d{1,8})$/) 
       say "The #{attribute} cannot be '#{num}'."
     end
   end
 
   def item_available?(id)
-    exists = @item_repository.all_ids
+    exists = @item_repository.all_ids # returns an array of item ids
     if exists.include?(id.to_i)
-      item = @item_repository.find(id)
+      item = @item_repository.find(id) # find requested item by id
       stock = item.quantity
       if stock >= 1
-        item.quantity -= 1
-        @item_repository.update(item)
+        item.quantity -= 1 # check stock and reducd by one if possible
+        @item_repository.update(item) # update items list
       end
       return [stock, item.name]
     else
       stock = 0
       return [stock, "NA"]
     end
+  end
+
+  def update_items_when_ordering(id)
+    
   end
 
   def clear

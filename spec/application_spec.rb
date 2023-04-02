@@ -175,8 +175,3 @@ RSpec.describe Application do
 
 end
 
-# describe Application do
-#   let(:items) { double(:item_repository)}
-#   let(:orders) { double(:order_repository)}
-#   let(:io) { double(:io) }
-#   let(:app) { Application.new('shop_manager_test', io, items, orders)}
