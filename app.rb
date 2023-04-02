@@ -174,15 +174,15 @@ class Application
   end
 
   def reset_items_and_orders
-    seed_sql = File.read('spec/seeds.sql')
-    connection = PG.connect({ host: '127.0.0.1', dbname: 'shop_manager' })
+    seed_sql = File.read('spec/seeds_m2m.sql')
+    connection = PG.connect({ host: '127.0.0.1', dbname: 'shop_manager_m2m' })
     connection.exec(seed_sql)
   end
 end
 
 if __FILE__ == $0
   app = Application.new(
-    'shop_manager',
+    'shop_manager_m2m',
     Kernel,
     ItemRepository.new,
     OrderRepository.new

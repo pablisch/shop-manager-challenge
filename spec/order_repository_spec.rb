@@ -3,8 +3,8 @@ require 'order_repository'
 RSpec.describe OrderRepository do
 
   def reset_tables
-    seed_sql = File.read('spec/seeds.sql')
-    connection = PG.connect({ host: '127.0.0.1', dbname: 'shop_manager_test' })
+    seed_sql = File.read('spec/seeds_m2m.sql')
+    connection = PG.connect({ host: '127.0.0.1', dbname: 'shop_manager_m2m_test' })
     connection.exec(seed_sql)
   end
 

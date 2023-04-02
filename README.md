@@ -1,3 +1,7 @@
+This is version of the project with an many to many table relationship.
+This is my first use of many to many tables and has not been fully integrated into the program.
+To be explored at a later date when I more time.
+
 Shop Manager Project
 =================
 
