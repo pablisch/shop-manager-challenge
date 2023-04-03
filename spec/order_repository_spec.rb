@@ -125,4 +125,25 @@ RSpec.describe OrderRepository do
       expect(updated_order.id).to eq 3
     end
   end
+
+  context "#last_order_id" do
+    it "returns the last order id with initial tables" do
+      repo = OrderRepository.new
+      expect(repo.last_order_id).to eq 6
+    end
+
+    it "returns the last order id after creating a new order" do
+      repo = OrderRepository.new
+      order = Order.new
+      order.customer = 'Luke Skywalker'
+      order.date = '2056-04-13'
+      repo.create(order)
+      orders = repo.all
+      expect(orders[-1].id).to eq 7
+      expect(orders[-1].customer).to eq 'Luke Skywalker'
+      expect(orders[-1].date).to eq '2056-04-13'
+      expect(repo.last_order_id).to eq 7
+    end
+  end 
 end
+

@@ -1,9 +1,22 @@
+> This is version of the project with an many-to-many table relationship. 
+> The original version was one-to-many as I had not properly explored many to many relationships.
 
-This is version of the project with an many to many table relationship. 
-The original version was one to many as I had not properly explored many to many relationships.
-This is my first use of many to many tables and has not been fully integrated into the program. 
-What remains is to update the shared table so that new orders update with items ordered
-To be explored at a later date when I more time.
+> This is my first use of many to many tables and has not been fully integrated into the program
+> in a way that I would like. 
+
+> What remains is to update the new order process so that it is possible to order more than one
+> item on a single order.
+> NOTE: the mechnaisms are there to have mulitple items on one order (order #2 already has) but
+> it is not yet possible to do this in app.rb. It is a fairly simple addition.
+> To be explored at a later date when I more time.
+
+> The program contains excess methods in the OrderRepository and ItemRepository classes.
+> These were implemented at the start of the project as part of my consilidation of the 
+> week's learning. I considered deleting them but they will be useful for reference and
+> for improving this project, e.g. updating and deleting.
+
+> I note that the brief does not require more than basic functionality and a one-to-many 
+> relationship. Any further coding was where it seemed helpful to my learning.
 
 Shop Manager Project
 =================

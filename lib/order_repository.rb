@@ -39,12 +39,13 @@ class OrderRepository
   end
 
   def all_order_ids
-    sql = 'SELECT * FROM orders;'
-    results = DatabaseConnection.exec_params(sql, [])
-    orders = []
-    results.each{ |record| orders << write_order(record) }
+    orders = all()
     order_ids = orders.map{ |object| object.id}
     return order_ids
+  end
+
+  def last_order_id
+    all_order_ids.sort.last.to_i
   end
 
   def find_order_with_items(id)
@@ -79,6 +80,12 @@ class OrderRepository
     return all_orders_with_items
   end
 
+  def update_join_table(item_id)
+    sql = 'INSERT INTO items_orders (item_id, order_id) VALUES ($1, $2);'
+    params = [item_id, last_order_id()]
+    DatabaseConnection.exec_params(sql, params)
+  end
+
   private
 
   def write_order(record)
@@ -90,3 +97,7 @@ class OrderRepository
   end
 end
 
+### TEST CODE BELOW - MUST BE COMMENTED ###
+# DatabaseConnection.connect('shop_manager_m2m_test')
+# repo = OrderRepository.new
+# repo.update_join_table(8)

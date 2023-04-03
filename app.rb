@@ -110,6 +110,7 @@ class Application
     elsif availability_hash[:stock] > 0
       new_order.item_id = availability_hash[:item_id]
       @order_repository.create(new_order)
+      @order_repository.update_join_table(new_order.item_id)
       say ""
       say "An order has been raised for #{new_order.customer}. Order confirmed for item ##{availability_hash[:item_id]}, #{availability_hash[:item_name]}, on #{new_order.date}."
     else 
@@ -158,7 +159,7 @@ class Application
 
 
   def clear
-    # system("clear")
+    system("clear")
   end
 
   def say(message)
