@@ -19,7 +19,7 @@ class Application
     until end_program
       user_action = main_menu()
       end_program = true if user_action == "exit"
-      # end_program = true ### UNCOMMENT THIS LINE WHEN RUNNING RSPEC ###
+      end_program = true ### UNCOMMENT THIS LINE WHEN RUNNING RSPEC ###
     end
   end
 

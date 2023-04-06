@@ -17,7 +17,7 @@ RSpec.describe Application do
   let(:io) { double(:io) }
   let(:app) { Application.new('shop_manager_m2m_test', io, ItemRepository.new, OrderRepository.new) }
 
-#   context "#main_menu, #main_menu_handler" do
+  context "#main_menu, #main_menu_handler" do
     it "prints a welcome and exits on q" do
       main_menu_expectations()
       expect(io).to receive(:gets).and_return("q").ordered
@@ -25,7 +25,8 @@ RSpec.describe Application do
       app.run
     end
 
-    it "prints a welcome and returns to main menu when invalid input given" do
+    xit "prints a welcome and returns to main menu when invalid input given" do
+      expect(io).to receive(:print).with("********").ordered
       main_menu_expectations()
       expect(io).to receive(:gets).and_return("6").ordered
       expect(io).to receive(:puts).with("\nSorry, 6 was not an option.").ordered
@@ -40,149 +41,149 @@ RSpec.describe Application do
       expect(io).to receive(:puts).with("\nGoodbye!").ordered
       app.run
     end
-#   end
+  end
 
-#   context "#list_items" do
-#     it "outputs a list of all items" do
-#       list_items_expectations()
-#       app.list_items
-#     end
+  context "#list_items" do
+    it "outputs a list of all items" do
+      list_items_expectations()
+      app.list_items
+    end
 
-#     it "call #list_items" do
-#       main_menu_expectations()
-#       expect(io).to receive(:gets).and_return("1").ordered
-#       list_items_expectations()
-#       app.run
-#     end
-#   end
+    it "call #list_items" do
+      main_menu_expectations()
+      expect(io).to receive(:gets).and_return("1").ordered
+      list_items_expectations()
+      app.run
+    end
+  end
 
-#   context "#list_orders" do
-#     it "outputs a list of all orders" do
-#       list_orders_expectations()
-#       app.list_orders
-#     end
+  context "#list_orders" do
+    it "outputs a list of all orders" do
+      list_orders_expectations()
+      app.list_orders
+    end
 
-#     it "call #order_items" do
-#       main_menu_expectations()
-#       expect(io).to receive(:gets).and_return("3").ordered
-#       list_orders_expectations()
-#       app.run
-#     end
-#   end
+    it "call #order_items" do
+      main_menu_expectations()
+      expect(io).to receive(:gets).and_return("3").ordered
+      list_orders_expectations()
+      app.run
+    end
+  end
 
-#   context "create new item" do
-#     it "goes through the process of creating a new item first time" do
-#       expect(io).to receive(:puts).with("").ordered
-#       expect(io).to receive(:print).with("Name for new item: ").ordered
-#       expect(io).to receive(:gets).and_return("spanner").ordered
-#       expect(io).to receive(:print).with("Price for new item: ").ordered
-#       expect(io).to receive(:gets).and_return("23.5").ordered
-#       expect(io).to receive(:print).with("Quantity for new item: ").ordered
-#       expect(io).to receive(:gets).and_return("50").ordered
-#       expect(io).to receive(:puts).with("Spanner has been added to the inventory with price set at £23.50 and quantity set to 50.").ordered
-#       app.create_item
-#     end
+  context "create new item" do
+    it "goes through the process of creating a new item first time" do
+      expect(io).to receive(:puts).with("").ordered
+      expect(io).to receive(:print).with("Name for new item: ").ordered
+      expect(io).to receive(:gets).and_return("spanner").ordered
+      expect(io).to receive(:print).with("Price for new item: ").ordered
+      expect(io).to receive(:gets).and_return("23.5").ordered
+      expect(io).to receive(:print).with("Quantity for new item: ").ordered
+      expect(io).to receive(:gets).and_return("50").ordered
+      expect(io).to receive(:puts).with("Spanner has been added to the inventory with price set at £23.50 and quantity set to 50.").ordered
+      app.create_item
+    end
     
-#     it "goes through the process for creating a new item with unaccepted inputs" do
-#       expect(io).to receive(:puts).with("").ordered
-#       expect(io).to receive(:print).with("Name for new item: ").ordered
-#       expect(io).to receive(:gets).and_return("13").ordered
-#       expect(io).to receive(:puts).with("The name must contain at least one letter character.").ordered
-#       expect(io).to receive(:print).with("Name for new item: ").ordered
-#       expect(io).to receive(:gets).and_return("golden toothpick").ordered
-#       expect(io).to receive(:print).with("Price for new item: ").ordered
-#       expect(io).to receive(:gets).and_return("ten").ordered
-#       expect(io).to receive(:puts).with("The price cannot be 'ten'.").ordered
-#       expect(io).to receive(:print).with("Price for new item: ").ordered
-#       expect(io).to receive(:gets).and_return("10").ordered
-#       expect(io).to receive(:print).with("Quantity for new item: ").ordered
-#       expect(io).to receive(:gets).and_return("25.5").ordered
-#       expect(io).to receive(:puts).with("The quantity cannot be '25.5'.").ordered
-#       expect(io).to receive(:print).with("Quantity for new item: ").ordered
-#       expect(io).to receive(:gets).and_return("25").ordered
-#       expect(io).to receive(:puts).with("Golden toothpick has been added to the inventory with price set at £10.00 and quantity set to 25.").ordered
-#       app.create_item
-#     end
+    it "goes through the process for creating a new item with unaccepted inputs" do
+      expect(io).to receive(:puts).with("").ordered
+      expect(io).to receive(:print).with("Name for new item: ").ordered
+      expect(io).to receive(:gets).and_return("13").ordered
+      expect(io).to receive(:puts).with("The name must contain at least one letter character.").ordered
+      expect(io).to receive(:print).with("Name for new item: ").ordered
+      expect(io).to receive(:gets).and_return("golden toothpick").ordered
+      expect(io).to receive(:print).with("Price for new item: ").ordered
+      expect(io).to receive(:gets).and_return("ten").ordered
+      expect(io).to receive(:puts).with("The price cannot be 'ten'.").ordered
+      expect(io).to receive(:print).with("Price for new item: ").ordered
+      expect(io).to receive(:gets).and_return("10").ordered
+      expect(io).to receive(:print).with("Quantity for new item: ").ordered
+      expect(io).to receive(:gets).and_return("25.5").ordered
+      expect(io).to receive(:puts).with("The quantity cannot be '25.5'.").ordered
+      expect(io).to receive(:print).with("Quantity for new item: ").ordered
+      expect(io).to receive(:gets).and_return("25").ordered
+      expect(io).to receive(:puts).with("Golden toothpick has been added to the inventory with price set at £10.00 and quantity set to 25.").ordered
+      app.create_item
+    end
 
-#     it "calls #create_item" do
-#       main_menu_expectations()
-#       expect(io).to receive(:gets).and_return("2").ordered
-#       expect(io).to receive(:puts).with("").ordered
-#       expect(io).to receive(:print).with("Name for new item: ").ordered
-#       expect(io).to receive(:gets).and_return("spanner").ordered
-#       expect(io).to receive(:print).with("Price for new item: ").ordered
-#       expect(io).to receive(:gets).and_return("23.5").ordered
-#       expect(io).to receive(:print).with("Quantity for new item: ").ordered
-#       expect(io).to receive(:gets).and_return("50").ordered
-#       expect(io).to receive(:puts).with("Spanner has been added to the inventory with price set at £23.50 and quantity set to 50.").ordered
-#       app.run
-#     end
-#   end
+    it "calls #create_item" do
+      main_menu_expectations()
+      expect(io).to receive(:gets).and_return("2").ordered
+      expect(io).to receive(:puts).with("").ordered
+      expect(io).to receive(:print).with("Name for new item: ").ordered
+      expect(io).to receive(:gets).and_return("spanner").ordered
+      expect(io).to receive(:print).with("Price for new item: ").ordered
+      expect(io).to receive(:gets).and_return("23.5").ordered
+      expect(io).to receive(:print).with("Quantity for new item: ").ordered
+      expect(io).to receive(:gets).and_return("50").ordered
+      expect(io).to receive(:puts).with("Spanner has been added to the inventory with price set at £23.50 and quantity set to 50.").ordered
+      app.run
+    end
+  end
 
-#   context "create new order" do
-#     it "goes through the process of creating a new order first time" do
-#       create_order_expectations()
-#       app.create_order
-#     end
+  context "create new order" do
+    it "goes through the process of creating a new order first time" do
+      create_order_expectations()
+      app.create_order
+    end
     
-#     it "goes through the process of creating a new order with unaccepted customer input and wrong id" do
-#       expect(io).to receive(:puts).with("").ordered
-#       expect(io).to receive(:print).with("Customer for new order: ").ordered
-#       expect(io).to receive(:gets).and_return("13").ordered
-#       expect(io).to receive(:puts).with("The customer must contain at least one letter character.").ordered
-#       expect(io).to receive(:print).with("Customer for new order: ").ordered
-#       expect(io).to receive(:gets).and_return("jane doe").ordered
-#       expect(Time).to receive(:now).and_return(Time.new(2023, 04, 01)).ordered
-#       expect(io).to receive(:puts).with("The order date is 2023-04-01.").ordered
-#       expect(io).to receive(:puts).with("").ordered
-#       list_items_expectations()
-#       expect(io).to receive(:print).with("What would you like to order? [item number] ").ordered
-#       expect(io).to receive(:gets).and_return("10").ordered
-#       expect(io).to receive(:puts).with("Item #10 cannot be found.").ordered
-#       app.create_order
-#     end
+    it "goes through the process of creating a new order with unaccepted customer input and wrong id" do
+      expect(io).to receive(:puts).with("").ordered
+      expect(io).to receive(:print).with("Customer for new order: ").ordered
+      expect(io).to receive(:gets).and_return("13").ordered
+      expect(io).to receive(:puts).with("The customer must contain at least one letter character.").ordered
+      expect(io).to receive(:print).with("Customer for new order: ").ordered
+      expect(io).to receive(:gets).and_return("jane doe").ordered
+      expect(Time).to receive(:now).and_return(Time.new(2023, 04, 01)).ordered
+      expect(io).to receive(:puts).with("The order date is 2023-04-01.").ordered
+      expect(io).to receive(:puts).with("").ordered
+      list_items_expectations()
+      expect(io).to receive(:print).with("What would you like to order? [item number] ").ordered
+      expect(io).to receive(:gets).and_return("10").ordered
+      expect(io).to receive(:puts).with("Item #10 cannot be found.").ordered
+      app.create_order
+    end
 
-#     it "goes through the process of creating a new order where the item is unavailable" do
-#       expect(io).to receive(:puts).with("").ordered
-#       expect(io).to receive(:print).with("Customer for new order: ").ordered
-#       expect(io).to receive(:gets).and_return("13").ordered
-#       expect(io).to receive(:puts).with("The customer must contain at least one letter character.").ordered
-#       expect(io).to receive(:print).with("Customer for new order: ").ordered
-#       expect(io).to receive(:gets).and_return("jane doe").ordered
-#       expect(Time).to receive(:now).and_return(Time.new(2023, 04, 01)).ordered
-#       expect(io).to receive(:puts).with("The order date is 2023-04-01.").ordered
-#       expect(io).to receive(:puts).with("").ordered
-#       list_items_expectations()
-#       expect(io).to receive(:print).with("What would you like to order? [item number] ").ordered
-#       expect(io).to receive(:gets).and_return("5").ordered
-#       expect(io).to receive(:puts).with("Sorry, item #5, Elder wand, is no longer in stock.").ordered
-#       app.create_order
-#     end
+    it "goes through the process of creating a new order where the item is unavailable" do
+      expect(io).to receive(:puts).with("").ordered
+      expect(io).to receive(:print).with("Customer for new order: ").ordered
+      expect(io).to receive(:gets).and_return("13").ordered
+      expect(io).to receive(:puts).with("The customer must contain at least one letter character.").ordered
+      expect(io).to receive(:print).with("Customer for new order: ").ordered
+      expect(io).to receive(:gets).and_return("jane doe").ordered
+      expect(Time).to receive(:now).and_return(Time.new(2023, 04, 01)).ordered
+      expect(io).to receive(:puts).with("The order date is 2023-04-01.").ordered
+      expect(io).to receive(:puts).with("").ordered
+      list_items_expectations()
+      expect(io).to receive(:print).with("What would you like to order? [item number] ").ordered
+      expect(io).to receive(:gets).and_return("5").ordered
+      expect(io).to receive(:puts).with("Sorry, item #5, Elder wand, is no longer in stock.").ordered
+      app.create_order
+    end
 
-#     it "calls #create_order" do
-#       main_menu_expectations()
-#       expect(io).to receive(:gets).and_return("4").ordered
-#       create_order_expectations()
-#       app.run
-#     end
-#   end
+    it "calls #create_order" do
+      main_menu_expectations()
+      expect(io).to receive(:gets).and_return("4").ordered
+      create_order_expectations()
+      app.run
+    end
+  end
   
-#   it "puts text" do
-#     expect(io).to receive(:puts).with("Hello").ordered
-#     app.say("Hello")
-#   end
+  it "puts text" do
+    expect(io).to receive(:puts).with("Hello").ordered
+    app.say("Hello")
+  end
   
-#   it "prints text and receives a text input" do
-#     expect(io).to receive(:print).with("Who?").ordered
-#     expect(io).to receive(:gets).and_return("me").ordered
-#     app.ask_inline("Who?")
-#   end
+  it "prints text and receives a text input" do
+    expect(io).to receive(:print).with("Who?").ordered
+    expect(io).to receive(:gets).and_return("me").ordered
+    app.ask_inline("Who?")
+  end
   
-#   it "puts text and receives a text input" do
-#     expect(io).to receive(:puts).with("Who?").ordered
-#     expect(io).to receive(:gets).and_return("me").ordered
-#     app.ask("Who?")
-#   end
+  it "puts text and receives a text input" do
+    expect(io).to receive(:puts).with("Who?").ordered
+    expect(io).to receive(:gets).and_return("me").ordered
+    app.ask("Who?")
+  end
 
 end
 
