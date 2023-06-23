@@ -1,8 +1,10 @@
-> This is version of the project with an many-to-many table relationship. 
-> The original version was one-to-many as I had not properly explored many to many relationships.
+# Shop Manager Project
 
-> This is my first use of many to many tables and has not been fully integrated into the program
-> in a way that I would like. 
+> This is a project for the Makers Academy course. It is a terminal app that allows a user to manage a shop database containing some items and orders.
+> I originally completed this solo challenge with a one-to-many relationship between items and orders as the project specification only required this.
+> I updated the project once complete to have a more satisfying many-to-many relationship between items and orders.
+
+> This is my first use of many to many tables and has not been fully integrated into the program.
 
 > What remains is to update the new order process so that it is possible to order more than one
 > item on a single order.
@@ -18,24 +20,29 @@
 > I note that the brief does not require more than basic functionality and a one-to-many 
 > relationship. Any further coding was where it seemed helpful to my learning.
 
-Shop Manager Project
-=================
+## Getting Started
 
-* Feel free to use Google, your notes, books, etc. but work on your own
-* If you refer to the solution of another coach or student, please put a link to that in your README
-* If you have a partial solution, **still check in a partial solution**
-* You must submit a pull request to this repo with your code next Monday morning
+1. Clone this repo to your local machine.
+2. Run `bundle install` to install the required gems.
+3. Create databases for running and testing the app:
+```bash
+createdb shop_manager_m2m
+createdb shop_manager_m2m_test
+```
+4. Run the following commands to create the tables and seed the databases:
+```bash
+psql -h 127.0.0.1 shop_manager_m2m < spec/shop_manager_m2m_tables.sql
+psql -h 127.0.0.1 shop_manager_m2m_test < spec/shop_manager_m2m_tables.sql
+psql -h 127.0.0.1 shop_manager_m2m < spec/seeds_m2m.sql
+psql -h 127.0.0.1 shop_manager_m2m_test < spec/seeds_m2m.sql
+```
+5. Run `ruby app.rb` to start the app in the terminal.
 
-Challenge:
--------
+## Running tests
 
-Please start by [forking this repo](https://github.com/makersacademy/shop-manager-challenge/fork), then clone your fork to your local machine. Work into that directory.
+Run `rspec` to run the tests.
 
-We are going to write a small terminal program allowing the user to manage a shop database containing some items and orders.
-
-User stories:
--------
-
+## User Stories
 ```
 As a shop manager
 So I can know which items I have in stock
