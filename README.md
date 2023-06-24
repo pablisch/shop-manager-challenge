@@ -1,24 +1,7 @@
 # Shop Manager Project
 
-> This is a project for the Makers Academy course. It is a terminal app that allows a user to manage a shop database containing some items and orders.
-> I originally completed this solo challenge with a one-to-many relationship between items and orders as the project specification only required this.
-> I updated the project once complete to have a more satisfying many-to-many relationship between items and orders.
-
-> This is my first use of many to many tables and has not been fully integrated into the program.
-
-> What remains is to update the new order process so that it is possible to order more than one
-> item on a single order.
-> NOTE: the mechnaisms are there to have mulitple items on one order (order #2 already has) but
-> it is not yet possible to do this in app.rb. It is a fairly simple addition.
-> To be explored at a later date when I more time.
-
-> The program contains excess methods in the OrderRepository and ItemRepository classes.
-> These were implemented at the start of the project as part of my consilidation of the 
-> week's learning. I considered deleting them but they will be useful for reference and
-> for improving this project, e.g. updating and deleting.
-
-> I note that the brief does not require more than basic functionality and a one-to-many 
-> relationship. Any further coding was where it seemed helpful to my learning.
+This is a project for the Makers Academy course. It is a terminal app that allows a user to manage a shop database containing some items and orders.
+It is possible to view all items and orders, and to create new items and orders.
 
 ## Getting Started
 
@@ -41,6 +24,7 @@ psql -h 127.0.0.1 shop_manager_m2m_test < spec/seeds_m2m.sql
 ## Running tests
 
 Run `rspec` to run the tests.
+Important: There is an unresolved problem with the test that the technical coaches were unable to resolve and was certainly beyond my ability at that time. app.rb run method created a loop in the tests that made them hang despite working well in normal usage. As a result, app.rb line 22 must be uncommented to run the tests. This is not ideal but it is the only way I could get the tests to run at the time. I will return to this at a later date to try and resolve it.
 
 ## User Stories
 ```
@@ -72,36 +56,41 @@ As a shop manager
 So I can manage orders
 I want to be able to create a new order.
 ```
+## Example user interaction
 
-Here's an example of the terminal output your program should generate (yours might be slightly different — that's totally OK):
+![Main menu](images/menu.png)
 
-```
-Welcome to the shop management program!
+![Items](images/items.png)
 
-What do you want to do?
-  1 = list all shop items
-  2 = create a new item
-  3 = list all orders
-  4 = create a new order
+![Orders](images/orders.png)
 
-1 [enter]
+The temrinal screen is cleared every time the user makes a selection from the menu.
 
-Here's a list of all shop items:
+## Notes on the project
 
- #1 Super Shark Vacuum Cleaner - Unit price: 99 - Quantity: 30
- #2 Makerspresso Coffee Machine - Unit price: 69 - Quantity: 15
- (...)
-```
+I originally completed this solo challenge with a one-to-many relationship between items and orders as the project specification only required this.
+I updated the project once complete to have a more satisfying many-to-many relationship between items and orders.
 
-Technical Approach:
------
+This is my first use of many to many tables and has not been fully integrated into the program.
+
+What remains is to update the new order process so that it is possible to order more than one
+item on a single order.
+NOTE: the mechnanisms are there to have mulitple items on one order (order #2 already has) but
+it is not yet possible to do this in app.rb. It is a fairly simple addition.
+To be explored at a later date when I more time.
+
+The program contains excess methods in the OrderRepository and ItemRepository classes.
+These were implemented at the start of the project as part of my consilidation of the 
+week's learning. I considered deleting them but they will be useful for reference and
+for improving this project, e.g. updating and deleting.
+
+### Technical Approach notes from Makers:
 
 In this unit, you integrated a database by using the `PG` gem, and test-driving and building Repository classes. You can continue to use this approach when building this challenge.
 
 [You'll also need to mock IO](https://github.com/makersacademy/golden-square/blob/main/mocking_bites/05_unit_testing_terminal_io_bite.md) in your integration or unit tests, since the program will ask for user input.
 
-Notes on test coverage
-----------------------
+### Notes on test coverage from Makers:
 
 Please ensure you have the following **AT THE TOP** of your spec_helper.rb in order to have test coverage stats generated
 on your pull request:
@@ -118,4 +107,3 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
 SimpleCov.start
 ```
 
-You can see your test coverage when you run your tests. If you want this in a graphical form, uncomment the `HTMLFormatter` line and see what happens!
